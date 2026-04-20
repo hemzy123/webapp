@@ -20,6 +20,9 @@ jobs:
     defaults:
       run:
         shell: bash
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -55,6 +58,13 @@ jobs:
       - name: Install Frontend
         run: |
           set -euo pipefail
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Frontend
+        run: |
           if [ -d frontend ]; then
             cd frontend
             npm ci
@@ -74,6 +84,16 @@ jobs:
       - name: Install Backend
         run: |
           set -euo pipefail
+            echo "frontend not present yet; skipping"
+          fi
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Backend
+        run: |
           cd backend
           pip install -r requirements.txt
 
@@ -111,3 +131,12 @@ jobs:
           curl --fail --show-error --silent -X POST "$DEPLOY_WEBHOOK_URL" \
             -H "Content-Type: application/json" \
             -d '{"image":"${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest"}'
+          cd backend
+          PYTHONPATH=. pytest tests -q
+
+      - name: Build Docker Image
+        run: docker build -t lifemap-ai .
+
+      - name: Deploy
+        run: |
+          echo "Deploy step placeholder (Render/Railway/AWS CLI)"
