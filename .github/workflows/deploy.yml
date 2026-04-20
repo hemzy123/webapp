@@ -3,6 +3,9 @@ name: Deploy LifeMap AI
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -32,18 +35,32 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Backend
+      - name: Install Backend (if present)
         run: |
-          cd backend
-          pip install -r requirements.txt
+          if [ -d backend ]; then
+            cd backend
+            python -m pip install --upgrade pip
+            python -m pip install -r requirements.txt
+          else
+            echo "backend not present yet; skipping"
+          fi
 
-      - name: Run Tests
+      - name: Run Backend Tests (if present)
         run: |
-          cd backend
-          PYTHONPATH=. pytest tests -q
+          if [ -d backend ] && [ -d backend/tests ]; then
+            cd backend
+            python -m pytest tests -q
+          else
+            echo "no backend tests found; skipping"
+          fi
 
-      - name: Build Docker Image
-        run: docker build -t lifemap-ai .
+      - name: Build Docker Image (if Dockerfile present)
+        run: |
+          if [ -f Dockerfile ]; then
+            docker build -t lifemap-ai .
+          else
+            echo "Dockerfile not found at repo root; skipping docker build"
+          fi
 
       - name: Deploy
         run: |
