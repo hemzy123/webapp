@@ -2,19 +2,20 @@
 
 **Imagine It. Build It. Live It.**
 
-NOVA is a digital civilization built around imagination, technological innovation and the future. It is designed for inventors, scientists, engineers, artists, creators, gamers, entrepreneurs and anyone who wants to turn ambitious ideas into reality.
+NOVA is a digital civilization and global community for inventors, scientists, engineers, creators, artists, gamers and entrepreneurs who want to turn ambitious ideas into reality.
 
-## Current build
+## Product
 
-The application is a React/Vite experience with routes for:
+- **Cities** — Nexus, Forge, Aurora, Genesis, Horizon, Quantum, Gaia and Arcade
+- **Dream Factory** — IDEA → DESIGN → RESEARCH → PROTOTYPE → DEVELOP → DEPLOY
+- **Nexa** — conceptual NOVA economy using ◈ / NXA
+- **Constitution** — founding principles, rights and accountable governance
+- **Citizenship** — founding-citizen onboarding
+- **Citizen OS** — digital passport, projects, civic activity and future platform services
 
-- Home — the NOVA civilization overview
-- Cities — Nexus, Forge, Aurora, Genesis, Horizon, Quantum, Gaia and Arcade
-- Innovation — the Dream Factory project pipeline
-- Economy — conceptual Nexa (NXA) economy
-- Constitution — founding charter and civic principles
-- Citizenship — founding citizen onboarding
-- Dashboard — early NOVA Citizen OS
+## Stack
+
+React + Vite + React Router + Lucide React. Styling is a lightweight custom CSS system with no Tailwind dependency.
 
 ## Development
 
@@ -24,10 +25,8 @@ npm run dev
 npm run build
 ```
 
-## Product direction
+## Deployment
 
-NOVA is initially a digital nation/digital civilization and global community, not a claim of legal sovereignty. Persistent identity, authentication, projects, civic systems and other services can be connected to the Horizons/backend layer as development continues.
+The `main` branch is the production web branch. GitHub Pages deploys the Vite `dist` output through `.github/workflows/deploy-pages.yml`.
 
-### Nexa notice
-
-Nexa (NXA) is currently conceptual demonstration data. This application does not issue cryptocurrency or provide banking, custody, payment or investment services.
+NOVA is initially a digital civilization/global community, not a claim of legal sovereignty. Nexa is conceptual demonstration data and is not a cryptocurrency, bank, payment service or investment product.
