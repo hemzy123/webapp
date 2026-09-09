@@ -1,11 +1,8 @@
-FROM python:3.11-slim
-
+FROM node:20-alpine
 WORKDIR /app
-COPY backend/requirements.txt /app/backend/requirements.txt
-RUN pip install --no-cache-dir -r /app/backend/requirements.txt
-
-COPY backend /app/backend
-ENV PYTHONPATH=/app/backend
-
-EXPOSE 8000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+EXPOSE 4173
+CMD ["npm","run","preview","--","--host","0.0.0.0","--port","4173"]
