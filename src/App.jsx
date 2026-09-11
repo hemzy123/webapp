@@ -1,7 +1,122 @@
-import { useState } from 'react';
-import { NavLink, Link, Routes, Route } from 'react-router-dom';
-import { ArrowUpRight, Atom, Building2, Cpu, Globe2, Lightbulb, Menu, Rocket, Shield, Sparkles, X, Zap, Search, ChevronRight, WalletCards, Users, FlaskConical, GraduationCap, Landmark, Bot, Palette, Leaf, Gamepad2, Plus, CircleDot } from 'lucide-react';
+import { useState } from "react";
+import { NavLink, Link, Routes, Route } from "react-router-dom";
+import {
+  ArrowUpRight,
+  Atom,
+  Building2,
+  Cpu,
+  Globe2,
+  Lightbulb,
+  Menu,
+  Rocket,
+  Shield,
+  Sparkles,
+  X,
+  Zap,
+  Search,
+  ChevronRight,
+  WalletCards,
+  Users,
+  FlaskConical,
+  GraduationCap,
+  Landmark,
+  Bot,
+  Palette,
+  Leaf,
+  Gamepad2,
+  Plus,
+  CircleDot,
+} from "lucide-react";
 
+const cities = [
+  {
+    name: "Nexus",
+    number: "01",
+    icon: Globe2,
+    role: "Capital",
+    desc: "Citizenship, civic life, governance and the central commons.",
+    fields: "Civic design · policy · public systems",
+    project: "Open Civic Ledger",
+    potential: "A trusted civic layer for global collaboration.",
+    color: "cyan",
+  },
+  {
+    name: "Forge",
+    number: "02",
+    icon: Cpu,
+    role: "Engineering",
+    desc: "Robotics, hardware, manufacturing and physical invention.",
+    fields: "Robotics · fabrication · systems",
+    project: "Personal AI Robot",
+    potential: "Local labs that turn designs into working objects.",
+    color: "blue",
+  },
+  {
+    name: "Aurora",
+    number: "03",
+    icon: Palette,
+    role: "Culture",
+    desc: "Art, music, games, design and digital expression.",
+    fields: "Media · music · design",
+    project: "Synthetic Aurora",
+    potential: "A living archive for new cultural forms.",
+    color: "violet",
+  },
+  {
+    name: "Genesis",
+    number: "04",
+    icon: Atom,
+    role: "Life Sciences",
+    desc: "Biotechnology, medicine, human development and life research.",
+    fields: "Biotech · medicine · wellbeing",
+    project: "Community BioLab",
+    potential: "Responsible research for longer, healthier lives.",
+    color: "green",
+  },
+  {
+    name: "Horizon",
+    number: "05",
+    icon: Rocket,
+    role: "Aerospace",
+    desc: "Spaceflight, satellites, orbital habitats and exploration.",
+    fields: "Satellites · aerospace · habitats",
+    project: "Orbital Garden",
+    potential: "A civilian network for the next space age.",
+    color: "orange",
+  },
+  {
+    name: "Quantum",
+    number: "06",
+    icon: Zap,
+    role: "Frontier Science",
+    desc: "Physics, mathematics, computing and advanced technology.",
+    fields: "AI · computing · mathematics",
+    project: "Open Research Mesh",
+    potential: "Shared tools for frontier discovery.",
+    color: "pink",
+  },
+  {
+    name: "Gaia",
+    number: "07",
+    icon: Leaf,
+    role: "Planet",
+    desc: "Climate technology, energy, sustainability and resilience.",
+    fields: "Energy · climate · resilience",
+    project: "Microgrid Commons",
+    potential: "Practical climate systems designed in public.",
+    color: "lime",
+  },
+  {
+    name: "Arcade",
+    number: "08",
+    icon: Gamepad2,
+    role: "Immersive Worlds",
+    desc: "Gaming, VR, virtual worlds and interactive experiences.",
+    fields: "Games · VR · worldbuilding",
+    project: "Civic Worlds",
+    potential: "Interactive spaces where new communities can form.",
+    color: "indigo",
+  },
 const cities=[
  {name:'Nexus',number:'01',icon:Globe2,role:'Capital',desc:'Citizenship, civic life, governance and the central commons.',fields:'Civic design · policy · public systems',project:'Open Civic Ledger',potential:'A trusted civic layer for global collaboration.',color:'cyan'},
  {name:'Forge',number:'02',icon:Cpu,role:'Engineering',desc:'Robotics, hardware, manufacturing and physical invention.',fields:'Robotics · fabrication · systems',project:'Personal AI Robot',potential:'Local labs that turn designs into working objects.',color:'blue'},
@@ -12,14 +127,968 @@ const cities=[
  {name:'Gaia',number:'07',icon:Leaf,role:'Planet',desc:'Climate technology, energy, sustainability and resilience.',fields:'Energy · climate · resilience',project:'Microgrid Commons',potential:'Practical climate systems designed in public.',color:'lime'},
  {name:'Arcade',number:'08',icon:Gamepad2,role:'Immersive Worlds',desc:'Gaming, VR, virtual worlds and interactive experiences.',fields:'Games · VR · worldbuilding',project:'Civic Worlds',potential:'Interactive spaces where new communities can form.',color:'indigo'}
 ];
-const principles=['Innovation','Freedom of Creation','Knowledge','Collaboration','Merit','Responsibility','Humanity'];
-const stages=['IDEA','DESIGN','RESEARCH','PROTOTYPE','DEVELOP','DEPLOY'];
-const projects=[
- {name:'Personal AI Robot',city:'Forge',stage:'PROTOTYPE',desc:'Open hardware and adaptable intelligence for an everyday personal robot.',people:18},
- {name:'Orbital Garden',city:'Horizon',stage:'RESEARCH',desc:'Resilient food systems designed for future orbital habitats.',people:9},
- {name:'Synthetic Aurora',city:'Aurora',stage:'DEVELOP',desc:'A generative audiovisual world combining music, light and spatial art.',people:14}
+const principles = [
+  "Innovation",
+  "Freedom of Creation",
+  "Knowledge",
+  "Collaboration",
+  "Merit",
+  "Responsibility",
+  "Humanity",
+];
+const stages = ["IDEA", "DESIGN", "RESEARCH", "PROTOTYPE", "DEVELOP", "DEPLOY"];
+const projects = [
+  {
+    name: "Personal AI Robot",
+    city: "Forge",
+    stage: "PROTOTYPE",
+    desc: "Open hardware and adaptable intelligence for an everyday personal robot.",
+    people: 18,
+  },
+  {
+    name: "Orbital Garden",
+    city: "Horizon",
+    stage: "RESEARCH",
+    desc: "Resilient food systems designed for future orbital habitats.",
+    people: 9,
+  },
+  {
+    name: "Synthetic Aurora",
+    city: "Aurora",
+    stage: "DEVELOP",
+    desc: "A generative audiovisual world combining music, light and spatial art.",
+    people: 14,
+  },
 ];
 
+function Shell({ children }) {
+  const [open, setOpen] = useState(false);
+  const links = [
+    ["Cities", "/cities"],
+    ["Innovation", "/innovation"],
+    ["Economy", "/economy"],
+    ["Constitution", "/constitution"],
+    ["Citizenship", "/citizenship"],
+  ];
+  return (
+    <div className="app">
+      <header className="topbar">
+        <div className="nav-wrap">
+          <Link className="brand" to="/" onClick={() => setOpen(false)}>
+            <span className="brand-symbol">N</span>
+            <span>NOVA</span>
+          </Link>
+          <nav className={`main-nav ${open ? "open" : ""}`}>
+            {links.map(([label, path]) => (
+              <NavLink
+                key={path}
+                to={path}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? "active" : ""}`
+                }
+              >
+                {label}
+              </NavLink>
+            ))}
+            <Link
+              className="nav-enter"
+              to="/dashboard"
+              onClick={() => setOpen(false)}
+            >
+              Enter NOVA <ArrowUpRight size={15} />
+            </Link>
+          </nav>
+          <button className="mobile-menu" onClick={() => setOpen(!open)}>
+            {open ? <X /> : <Menu />}
+          </button>
+        </div>
+      </header>
+      {children}
+      <footer className="footer">
+        <div className="footer-grid">
+          <div>
+            <div className="brand footer-brand">
+              <span className="brand-symbol">N</span>NOVA
+            </div>
+            <p>
+              A digital civilization for people who imagine what comes next.
+            </p>
+          </div>
+          <div>
+            <span className="footer-label">EXPLORE</span>
+            <Link to="/cities">Cities</Link>
+            <Link to="/innovation">Dream Factory</Link>
+            <Link to="/economy">Nexa Economy</Link>
+          </div>
+          <div>
+            <span className="footer-label">CIVIC</span>
+            <Link to="/constitution">Constitution</Link>
+            <Link to="/citizenship">Citizenship</Link>
+            <Link to="/dashboard">Citizen OS</Link>
+          </div>
+          <div>
+            <span className="footer-label">NOVA</span>
+            <span>Imagine It. Build It. Live It.</span>
+            <span>Digital civilization · Global community</span>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span>© NOVA Commonwealth</span>
+          <span>Built for the future-minded.</span>
+        </div>
+      </footer>
+    </div>
+  );
+}
+function Page({ eyebrow, title, intro, children }) {
+  return (
+    <Shell>
+      <main className="page">
+        <div className="page-heading">
+          <div className="eyebrow">{eyebrow}</div>
+          <h1>{title}</h1>
+          {intro && <p>{intro}</p>}
+        </div>
+        {children}
+      </main>
+    </Shell>
+  );
+}
+function SectionHead({ eyebrow, title, link, to }) {
+  return (
+    <div className="section-head">
+      <div>
+        <div className="eyebrow">{eyebrow}</div>
+        <h2>{title}</h2>
+      </div>
+      {link && (
+        <Link className="text-link" to={to}>
+          {link}
+          <ChevronRight size={15} />
+        </Link>
+      )}
+    </div>
+  );
+}
+function Home() {
+  return (
+    <Shell>
+      <section className="hero">
+        <div className="hero-grid"></div>
+        <div className="hero-orbit orbit-one"></div>
+        <div className="hero-orbit orbit-two"></div>
+        <div className="hero-content">
+          <div className="eyebrow hero-eyebrow">
+            <span className="pulse-dot"></span>A CIVILIZATION FOR THE FUTURE
+          </div>
+          <h1>
+            Imagine It.
+            <br />
+            <span>Build It.</span>
+            <br />
+            Live It.
+          </h1>
+          <p>
+            NOVA is a digital civilization for people who imagine technologies
+            that do not exist yet—and want a place to turn those ideas into
+            reality.
+          </p>
+          <div className="hero-actions">
+            <Link className="primary-btn" to="/citizenship">
+              Become a founding citizen <ArrowUpRight size={17} />
+            </Link>
+            <Link className="ghost-btn" to="/innovation">
+              Explore the Dream Factory <ChevronRight size={16} />
+            </Link>
+          </div>
+        </div>
+        <div className="hero-status">
+          <span>
+            <CircleDot size={12} />
+            NOVA NETWORK
+          </span>
+          <b>ONLINE</b>
+          <span>08 CITIES</span>
+        </div>
+      </section>
+      <section className="ticker">
+        <div>INNOVATION</div>
+        <div>SCIENCE</div>
+        <div>CREATION</div>
+        <div>COLLABORATION</div>
+        <div>EXPLORATION</div>
+        <div>HUMANITY</div>
+      </section>
+      <section className="section">
+        <div className="section-wrap">
+          <div className="manifesto">
+            <div className="manifesto-mark">◈</div>
+            <div>
+              <div className="eyebrow">THE IDEA</div>
+              <h2>A home for the future-minded.</h2>
+              <p>
+                NOVA connects inventors, scientists, engineers, artists,
+                creators, gamers and entrepreneurs inside one evolving digital
+                nation. It is a place to meet, learn, build, experiment and
+                imagine together.
+              </p>
+            </div>
+          </div>
+          <div className="metrics">
+            <div>
+              <strong>08</strong>
+              <span>Digital cities</span>
+            </div>
+            <div>
+              <strong>∞</strong>
+              <span>Ideas to build</span>
+            </div>
+            <div>
+              <strong>01</strong>
+              <span>Shared civilization</span>
+            </div>
+            <div>
+              <strong>◈</strong>
+              <span>Nexa economy</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="section dark-section">
+        <div className="section-wrap">
+          <SectionHead
+            eyebrow="THE CITIES"
+            title="Eight worlds. One NOVA."
+            link="Explore all cities"
+            to="/cities"
+          />
+          <div className="city-grid">
+            {cities.map((c) => (
+              <Link className="city-card" to="/cities" key={c.name}>
+                <div className="card-top">
+                  <span className="city-number">{c.number}</span>
+                  <c.icon size={21} />
+                </div>
+                <span className="city-role">{c.role}</span>
+                <h3>{c.name}</h3>
+                <p>{c.desc}</p>
+                <span className="card-arrow">
+                  <ArrowUpRight size={17} />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section">
+        <div className="section-wrap">
+          <div className="factory-banner">
+            <div className="factory-copy">
+              <div className="eyebrow">DREAM FACTORY</div>
+              <h2>Ideas are citizens too.</h2>
+              <p>
+                Every meaningful invention starts somewhere. NOVA gives it a
+                path from imagination to reality.
+              </p>
+              <Link className="primary-btn" to="/innovation">
+                Enter Dream Factory <ArrowUpRight size={16} />
+              </Link>
+            </div>
+            <div className="pipeline-mini">
+              {stages.map((s, i) => (
+                <div className="pipeline-node" key={s}>
+                  <span>0{i + 1}</span>
+                  <b>{s}</b>
+                  {i < stages.length - 1 && <i />}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="section dark-section">
+        <div className="section-wrap">
+          <SectionHead
+            eyebrow="FOUNDING PHILOSOPHY"
+            title="The future is a collective project."
+          />
+          <div className="principle-grid">
+            {principles.map((p, i) => (
+              <div key={p}>
+                <span>0{i + 1}</span>
+                <h3>{p}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section">
+        <div className="section-wrap">
+          <SectionHead
+            eyebrow="CIVILIZATION SYSTEMS"
+            title="A common future, with room to make your own mark."
+          />
+          <div className="systems-grid">
+            <Link to="/economy">
+              <WalletCards />
+              <span>NEXA ECONOMY</span>
+              <h3>Creation has a place to flow.</h3>
+              <p>
+                Explore a transparent, conceptual economy designed around
+                contribution—not speculation.
+              </p>
+            </Link>
+            <Link to="/constitution">
+              <Landmark />
+              <span>NOVA COMMONWEALTH</span>
+              <h3>Power remains accountable.</h3>
+              <p>
+                Read the founding charter for distributed governance, rights and
+                civic participation.
+              </p>
+            </Link>
+            <Link to="/citizenship">
+              <Users />
+              <span>FOUNDING CITIZENSHIP</span>
+              <h3>Enter the founding generation.</h3>
+              <p>
+                Begin a prototype identity and help shape the culture of the
+                civilization.
+              </p>
+            </Link>
+          </div>
+          <div className="closing-cta">
+            <div>
+              <div className="eyebrow">THE INVITATION</div>
+              <h2>Ideas deserve a place to become real.</h2>
+            </div>
+            <Link className="primary-btn" to="/citizenship">
+              Enter NOVA <ArrowUpRight size={17} />
+            </Link>
+          </div>
+        </div>
+      </section>
+    </Shell>
+  );
+}
+function Cities() {
+  return (
+    <Page
+      eyebrow="NOVA territories"
+      title="Eight cities for eight dimensions of the future."
+      intro="Each city is a digital district with its own communities, projects, knowledge and culture. Together they form the living map of NOVA."
+    >
+      <div className="city-grid full-city-grid">
+        {cities.map((c) => (
+          <article className="city-card" key={c.name}>
+            <div className="card-top">
+              <span className="city-number">{c.number}</span>
+              <c.icon size={22} />
+            </div>
+            <span className="city-role">{c.role}</span>
+            <h3>{c.name}</h3>
+            <p>{c.desc}</p>
+            <div className="city-detail">
+              <span>{c.fields}</span>
+              <b>Signal / {c.project}</b>
+              <small>{c.potential}</small>
+            </div>
+          </article>
+        ))}
+      </div>
+    </Page>
+  );
+}
+function Innovation() {
+  const [query, setQuery] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const visibleProjects = projects.filter((project) =>
+    `${project.name} ${project.city} ${project.stage}`
+      .toLowerCase()
+      .includes(query.toLowerCase()),
+  );
+  return (
+    <Page
+      eyebrow="Dream Factory"
+      title="Turn impossible ideas into buildable projects."
+      intro="NOVA's innovation system connects imagination, knowledge, people and resources into a path toward reality."
+    >
+      <div className="stage-track" aria-label="Dream Factory pipeline">
+        {stages.map((s, i) => (
+          <div className={`stage ${i === 0 ? "current" : ""}`} key={s}>
+            <span>0{i + 1}</span>
+            <b>{s}</b>
+          </div>
+        ))}
+      </div>
+      <div className="innovation-toolbar">
+        <div>
+          <div className="eyebrow">DISCOVER</div>
+          <h2>Projects being built now</h2>
+        </div>
+        <label className="project-search">
+          <Search size={16} />
+          <span className="sr-only">Search Dream Factory projects</span>
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search projects"
+          />
+        </label>
+      </div>
+      <div className="project-grid">
+        {visibleProjects.map((p) => (
+          <article className="project-card" key={p.name}>
+            <div className="project-meta">
+              <span>{p.city}</span>
+              <span>{p.stage}</span>
+            </div>
+            <h3>{p.name}</h3>
+            <p>{p.desc}</p>
+            <div className="project-bottom">
+              <span>
+                <Users size={15} />
+                {p.people} builders
+              </span>
+              <ArrowUpRight size={17} />
+            </div>
+          </article>
+        ))}
+      </div>
+      {visibleProjects.length === 0 && (
+        <p className="empty-state">
+          No active projects match that signal. Start one of your own.
+        </p>
+      )}
+      <div className="create-panel">
+        <div className="create-icon">
+          <Lightbulb />
+        </div>
+        <div>
+          <div className="eyebrow">YOUR TURN</div>
+          <h2>Have an idea?</h2>
+          <p>
+            Frame the problem, solution, requirements, team, budget and roadmap.
+            This is a local prototype; nothing is published or funded from this
+            page.
+          </p>
+        </div>
+        <button
+          className="primary-btn"
+          onClick={() => {
+            setShowForm(true);
+            setSubmitted(false);
+            setFormError("");
+          }}
+        >
+          <Plus size={17} />
+          Create project
+        </button>
+      </div>
+      {showForm && (
+        <div
+          className="modal-backdrop"
+          role="presentation"
+          onMouseDown={() => setShowForm(false)}
+        >
+          <section
+            className="project-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="project-modal-title"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <button
+              className="modal-close"
+              aria-label="Close project proposal"
+              onClick={() => setShowForm(false)}
+            >
+              <X size={18} />
+            </button>
+            {submitted ? (
+              <div className="proposal-success">
+                <Sparkles size={30} />
+                <div className="eyebrow">PROTOTYPE SAVED</div>
+                <h2>Signal received.</h2>
+                <p>
+                  Your draft remains only in this browser session. NOVA will
+                  connect project collaboration and persistence in a future
+                  platform release.
+                </p>
+                <button
+                  className="primary-btn"
+                  onClick={() => setShowForm(false)}
+                >
+                  Return to Dream Factory
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="eyebrow">DREAM FACTORY / NEW PROPOSAL</div>
+                <h2 id="project-modal-title">
+                  Give your idea a starting point.
+                </h2>
+                <form
+                  className="project-form"
+                  onSubmit={async (event) => {
+                    event.preventDefault();
+                    setFormError("");
+                    const data = Object.fromEntries(
+                      new FormData(event.currentTarget),
+                    );
+                    try {
+                      const response = await fetch("/api/projects", {
+                        method: "POST",
+                        headers: { "content-type": "application/json" },
+                        body: JSON.stringify(data),
+                      });
+                      const result = await response.json();
+                      if (!response.ok)
+                        throw new Error(
+                          result.error || "Unable to save proposal.",
+                        );
+                      setProjectList((current) => [result.project, ...current]);
+                      setSubmitted(true);
+                    } catch (error) {
+                      setFormError(
+                        error.message || "Unable to reach the NOVA API.",
+                      );
+                    }
+                  }}
+                >
+                  <label>
+                    Project name
+                    <input
+                      required
+                      name="name"
+                      placeholder="Name the thing you want to build"
+                    />
+                  </label>
+                  <label>
+                    Problem
+                    <textarea
+                      required
+                      name="problem"
+                      placeholder="What needs to change?"
+                    />
+                  </label>
+                  <label>
+                    Proposed solution
+                    <textarea
+                      required
+                      name="solution"
+                      placeholder="How might this project help?"
+                    />
+                  </label>
+                  <div className="form-columns">
+                    <label>
+                      City
+                      <select name="city" defaultValue="Forge">
+                        {cities.map((city) => (
+                          <option key={city.name}>{city.name}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Skills needed
+                      <input
+                        name="skills"
+                        placeholder="Design, research, engineering..."
+                      />
+                    </label>
+                  </div>
+                  <label>
+                    Roadmap signal
+                    <input
+                      name="roadmap"
+                      placeholder="What is the first meaningful milestone?"
+                    />
+                  </label>
+                  <p className="form-note">
+                    Prototype only. Do not enter sensitive, financial, or
+                    personal information.
+                  </p>
+                  {formError && (
+                    <p className="form-error" role="alert">
+                      {formError}
+                    </p>
+                  )}
+                  <button className="primary-btn" type="submit">
+                    Save local proposal <ArrowUpRight size={16} />
+                  </button>
+                </form>
+              </>
+            )}
+          </section>
+        </div>
+      )}
+    </Page>
+  );
+}
+function Economy() {
+  const funds = [
+    ["Treasury", "30%"],
+    ["Citizen Reserve", "20%"],
+    ["Innovation Fund", "20%"],
+    ["Infrastructure", "10%"],
+    ["Education & Research", "10%"],
+    ["Founding Institution", "5%"],
+    ["Emergency Reserve", "5%"],
+  ];
+  return (
+    <Page
+      eyebrow="Nexa economy"
+      title="An economy designed to reward creation."
+      intro="Nexa is NOVA's conceptual economic system: value flows toward people who create, solve, teach, research and build."
+    >
+      <div className="economy-hero">
+        <div>
+          <span className="nexa-symbol">◈</span>
+          <div className="eyebrow">CONCEPTUAL CURRENCY</div>
+          <h2>Nexa</h2>
+          <p>NXA · Maximum authorized supply</p>
+          <strong>100,000,000,000</strong>
+        </div>
+        <div className="economy-orbit">
+          <WalletCards size={36} />
+          <span>◈</span>
+        </div>
+      </div>
+      <div className="economy-grid">
+        <div className="info-panel">
+          <div className="eyebrow">ECONOMIC PRINCIPLE</div>
+          <h2>Currency flows toward creation.</h2>
+          <p>
+            In the long-term vision, citizens can earn through software,
+            hardware, research, education, art, services, entrepreneurship and
+            other meaningful contributions.
+          </p>
+          <div className="earning-grid">
+            <span>
+              <Cpu />
+              Build
+            </span>
+            <span>
+              <FlaskConical />
+              Research
+            </span>
+            <span>
+              <GraduationCap />
+              Teach
+            </span>
+            <span>
+              <Palette />
+              Create
+            </span>
+          </div>
+        </div>
+        <div className="info-panel">
+          <div className="eyebrow">PROPOSED ALLOCATION</div>
+          {funds.map(([name, pct]) => (
+            <div className="fund-row" key={name}>
+              <span>{name}</span>
+              <b>{pct}</b>
+              <i>
+                <em style={{ width: pct }} />
+              </i>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="notice">
+        <Shield size={18} />
+        <span>
+          Nexa is conceptual demonstration data. NOVA does not currently issue
+          cryptocurrency or provide banking, custody, payment or investment
+          services.
+        </span>
+      </div>
+    </Page>
+  );
+}
+function Constitution() {
+  return (
+    <Page
+      eyebrow="Founding charter"
+      title="A civilization where people remain sovereign over the future."
+      intro="The NOVA Commonwealth is governed by a founding charter built around creation, accountability, participation and human dignity."
+    >
+      <div className="constitution-grid">
+        <div className="charter-panel">
+          <div className="eyebrow">FOUNDING PRINCIPLES</div>
+          {principles.map((p, i) => (
+            <div className="charter-row" key={p}>
+              <span>0{i + 1}</span>
+              <b>{p}</b>
+              <ChevronRight size={15} />
+            </div>
+          ))}
+        </div>
+        <div className="charter-panel rights">
+          <div className="eyebrow">CITIZEN RIGHTS</div>
+          <h2>Freedom to create.</h2>
+          <p>
+            Freedom of creation and association. Access to knowledge. Privacy.
+            Economic participation. Due process. Transparent governance. The
+            right to leave NOVA.
+          </p>
+          <div className="charter-note">
+            <Bot size={19} />
+            <span>
+              AI may assist NOVA, but significant civic decisions remain
+              accountable to humans.
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="government">
+        <SectionHead
+          eyebrow="DISTRIBUTED GOVERNANCE"
+          title="Power is designed to be accountable."
+        />
+        <div className="government-grid">
+          <div>
+            <Landmark />
+            <b>Citizen Assembly</b>
+            <span>House of Citizens + Council of Builders</span>
+          </div>
+          <div>
+            <Shield />
+            <b>Supreme Civic Court</b>
+            <span>Rights, disputes and constitutional review</span>
+          </div>
+          <div>
+            <Zap />
+            <b>Nexa Monetary Authority</b>
+            <span>Economic system oversight</span>
+          </div>
+          <div>
+            <Bot />
+            <b>AI Authority</b>
+            <span>Auditable AI governance and standards</span>
+          </div>
+        </div>
+      </div>
+    </Page>
+  );
+}
+function Citizenship() {
+  const [complete, setComplete] = useState(false);
+  const [formError, setFormError] = useState("");
+  return (
+    <Page
+      eyebrow="Citizenship"
+      title="Claim your place in the founding generation."
+      intro="Create a simple founding identity today. Deeper citizenship services will grow with NOVA."
+    >
+      <div className="citizenship-layout">
+        <div className="passport-preview">
+          <div className="passport-head">
+            <span>NOVA</span>
+            <span>FOUNDING CITIZEN</span>
+          </div>
+          <div className="passport-mark">N</div>
+          <div className="passport-info">
+            <span>DIGITAL PASSPORT</span>
+            <strong>
+              {complete ? "IDENTITY DRAFTED" : "FOUNDING CITIZEN"}
+            </strong>
+            <small>Residence · Nexus</small>
+          </div>
+          <div className="passport-foot">
+            <span>◈ NXA</span>
+            <span>NOVA COMMONWEALTH</span>
+          </div>
+        </div>
+        <div className="signup-panel">
+          {complete ? (
+            <div className="proposal-success">
+              <Sparkles size={30} />
+              <div className="eyebrow">FOUNDING SIGNAL RECEIVED</div>
+              <h2>Welcome to NOVA.</h2>
+              <p>
+                Your prototype identity has not been sent or stored. When the
+                identity service is ready, citizens will control what
+                information is shared publicly.
+              </p>
+              <Link className="primary-btn" to="/dashboard">
+                View Citizen OS <ArrowUpRight size={16} />
+              </Link>
+            </div>
+          ) : (
+            <>
+              <div className="eyebrow">FOUNDING REGISTRATION</div>
+              <h2>Enter the future.</h2>
+              <form
+                onSubmit={async (event) => {
+                  event.preventDefault();
+                  setFormError("");
+                  const form = event.currentTarget;
+                  const data = Object.fromEntries(new FormData(form));
+                  try {
+                    const response = await fetch("/api/citizens", {
+                      method: "POST",
+                      headers: { "content-type": "application/json" },
+                      body: JSON.stringify(data),
+                    });
+                    const result = await response.json();
+                    if (!response.ok)
+                      throw new Error(
+                        result.error || "Unable to create identity.",
+                      );
+                    setComplete(true);
+                  } catch (error) {
+                    setFormError(
+                      error.message || "Unable to reach the NOVA API.",
+                    );
+                  }
+                }}
+              >
+                <label>
+                  Display name
+                  <input
+                    required
+                    autoComplete="nickname"
+                    name="displayName"
+                    placeholder="How should NOVA know you?"
+                  />
+                </label>
+                <label>
+                  Email
+                  <input
+                    required
+                    type="email"
+                    autoComplete="email"
+                    name="email"
+                    placeholder="you@example.com"
+                  />
+                </label>
+                <label>
+                  What do you want to build?
+                  <input
+                    required
+                    name="interests"
+                    placeholder="Robotics, music, climate tech..."
+                  />
+                </label>
+                <button className="primary-btn" type="submit">
+                  Create NOVA identity <ArrowUpRight size={16} />
+                </button>
+              </form>
+              {formError && (
+                <p className="form-error" role="alert">
+                  {formError}
+                </p>
+              )}
+              <p className="form-note">
+                Prototype registration only. We do not create an account or
+                persist this information from this interface.
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+    </Page>
+  );
+}
+function Dashboard() {
+  return (
+    <Page
+      eyebrow="Citizen OS"
+      title="Welcome to NOVA."
+      intro="Your starting point inside the digital civilization."
+    >
+      <div className="dashboard-top">
+        <div className="passport-small">
+          <div className="passport-small-mark">N</div>
+          <div>
+            <span>FOUNDING CITIZEN</span>
+            <h2>Pioneer</h2>
+            <p>Residence · Nexus</p>
+          </div>
+          <span className="online">ONLINE</span>
+        </div>
+        <div className="dashboard-action">
+          <div className="eyebrow">NEXT MOVE</div>
+          <h3>Build something.</h3>
+          <p>Your next invention starts as an idea.</p>
+          <Link className="primary-btn" to="/innovation">
+            Create project <ArrowUpRight size={16} />
+          </Link>
+        </div>
+      </div>
+      <div className="os-grid">
+        <div className="os-card">
+          <WalletCards />
+          <span>◈ NEXA WALLET</span>
+          <strong>1,000 ◈</strong>
+          <small>Demo balance</small>
+        </div>
+        <div className="os-card">
+          <Lightbulb />
+          <span>PROJECTS</span>
+          <strong>03</strong>
+          <small>Active builds</small>
+        </div>
+        <div className="os-card">
+          <Users />
+          <span>COMMUNITIES</span>
+          <strong>07</strong>
+          <small>Joined</small>
+        </div>
+        <div className="os-card">
+          <Landmark />
+          <span>CIVIC</span>
+          <strong>00</strong>
+          <small>Proposals</small>
+        </div>
+      </div>
+      <div className="dashboard-lower">
+        <div className="info-panel">
+          <div className="eyebrow">YOUR NOVA</div>
+          <h2>Digital life, one place.</h2>
+          <div className="os-links">
+            <Link to="/cities">
+              Cities <ChevronRight />
+            </Link>
+            <Link to="/innovation">
+              Projects <ChevronRight />
+            </Link>
+            <Link to="/economy">
+              Economy <ChevronRight />
+            </Link>
+            <Link to="/constitution">
+              Civic <ChevronRight />
+            </Link>
+          </div>
+        </div>
+        <div className="info-panel dashboard-quote">
+          <span>“</span>
+          <p>
+            The future belongs not only to those who predict it, but to those
+            willing to build it.
+          </p>
+        </div>
+      </div>
+    </Page>
+  );
+}
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/cities" element={<Cities />} />
+      <Route path="/innovation" element={<Innovation />} />
+      <Route path="/economy" element={<Economy />} />
+      <Route path="/constitution" element={<Constitution />} />
+      <Route path="/citizenship" element={<Citizenship />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="*" element={<Home />} />
+    </Routes>
+  );
+}
 function Shell({children}){const [open,setOpen]=useState(false);const links=[['Cities','/cities'],['Innovation','/innovation'],['Economy','/economy'],['Constitution','/constitution'],['Citizenship','/citizenship']];return <div className="app"><header className="topbar"><div className="nav-wrap"><Link className="brand" to="/" onClick={()=>setOpen(false)}><span className="brand-symbol">N</span><span>NOVA</span></Link><nav className={`main-nav ${open?'open':''}`}>{links.map(([label,path])=><NavLink key={path} to={path} onClick={()=>setOpen(false)} className={({isActive})=>`nav-link ${isActive?'active':''}`}>{label}</NavLink>)}<Link className="nav-enter" to="/dashboard" onClick={()=>setOpen(false)}>Enter NOVA <ArrowUpRight size={15}/></Link></nav><button className="mobile-menu" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button></div></header>{children}<footer className="footer"><div className="footer-grid"><div><div className="brand footer-brand"><span className="brand-symbol">N</span>NOVA</div><p>A digital civilization for people who imagine what comes next.</p></div><div><span className="footer-label">EXPLORE</span><Link to="/cities">Cities</Link><Link to="/innovation">Dream Factory</Link><Link to="/economy">Nexa Economy</Link></div><div><span className="footer-label">CIVIC</span><Link to="/constitution">Constitution</Link><Link to="/citizenship">Citizenship</Link><Link to="/dashboard">Citizen OS</Link></div><div><span className="footer-label">NOVA</span><span>Imagine It. Build It. Live It.</span><span>Digital civilization · Global community</span></div></div><div className="footer-bottom"><span>© NOVA Commonwealth</span><span>Built for the future-minded.</span></div></footer></div>}
 function Page({eyebrow,title,intro,children}){return <Shell><main className="page"><div className="page-heading"><div className="eyebrow">{eyebrow}</div><h1>{title}</h1>{intro&&<p>{intro}</p>}</div>{children}</main></Shell>}
 function SectionHead({eyebrow,title,link,to}){return <div className="section-head"><div><div className="eyebrow">{eyebrow}</div><h2>{title}</h2></div>{link&&<Link className="text-link" to={to}>{link}<ChevronRight size={15}/></Link>}</div>}
