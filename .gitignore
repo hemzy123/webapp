@@ -1,4 +1,8 @@
+node_modules/
+dist/
+.DS_Store
 __pycache__/
 *.pyc
 .venv/
 .env
+data/nova.json
